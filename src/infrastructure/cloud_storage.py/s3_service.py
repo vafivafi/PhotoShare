@@ -1,5 +1,5 @@
 from contextlib import asynccontextmanager
-
+import uuid
 from aiobotocore.session import get_session
 from botocore.config import Config
 from fastapi import UploadFile
@@ -9,16 +9,16 @@ from src.infrastructure.log.logger import logger
 
 class S3Service:
     def __init__(self):
-        settings = get_cloud_storage()
+        _settings = get_cloud_storage()
 
         self._config = {
-            "endpoint_url": settings.endpoint_url,
-            "aws_access_key_id": settings.access_key,
-            "aws_secret_access_key": settings.secret_key,
-            "verify": settings.verify_ssl
+            "endpoint_url": _settings.endpoint_url,
+            "aws_access_key_id": _settings.access_key,
+            "aws_secret_access_key": _settings.secret_key,
+            "verify": _settings.verify_ssl
         }
-        self._bucket_name = settings.bucket_name
-        self._public_url = settings.public_s3_url
+        self._bucket_name = _settings.bucket_name
+        self._public_url = _settings.public_s3_url
         self._session = get_session()
 
     @asynccontextmanager
@@ -40,7 +40,7 @@ class S3Service:
             async with self.get_client() as client:
                 await client.put_object(
                     Bucket=self._bucket_name,
-                    Key=file.filename,
+                    Key=f"{uuid.uuid4()}_{file.filename}",
                     Body=file_content
                 )
             file_url = f"{self._public_url}/{file.filename}"
