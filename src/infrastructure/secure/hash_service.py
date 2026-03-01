@@ -6,7 +6,7 @@ from argon2.exceptions import VerifyMismatchError
 from src.config.argon_service_settings import ArgonSettings
 from src.infrastructure.log.logger import logger
 
-class ArgonServise:
+class ArgonService:
     def __init__(self):
         self._settings = ArgonSettings()
         self._password_hasher: Optional[PasswordHasher] = None

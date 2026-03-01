@@ -41,3 +41,4 @@ class DataBaseConfig:
             logger.info("Database disconnected")
         except SQLAlchemyError:
             logger.exception("Database connection failed")
+            raise
