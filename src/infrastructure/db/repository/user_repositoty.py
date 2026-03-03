@@ -1,9 +1,7 @@
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
-from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.infrastructure.log.logger import logger
 from src.infrastructure.db.models.user_model import UserModel
 
 class UserRepository:
