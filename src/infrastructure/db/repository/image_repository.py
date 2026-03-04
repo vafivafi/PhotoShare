@@ -7,11 +7,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.infrastructure.db.models.image_model import ImageModel
 
 class ImageRepository:
-    def __init__(self, session: AsyncSession):
-        self.session = session
-
     async def create_image(
             self,
+            session: AsyncSession,
             user_id: uuid.UUID,
             image_size: int,
             name: str,
@@ -23,12 +21,13 @@ class ImageRepository:
             name=name,
             description=description,
         )
-        self.session.add(image)
+        session.add(image)
 
         return image
 
     async def get_images(
             self,
+            session: AsyncSession,
             limit: int,
             offset: int,
     ) -> list[ImageModel]:
@@ -39,13 +38,14 @@ class ImageRepository:
             .limit(limit)
             .offset(offset)
         )
-        result = await self.session.execute(query)
+        result = await session.execute(query)
         images = result.scalars().all()
 
         return images
 
     async def get_images_user_id(
             self,
+            session: AsyncSession,
             user_id: uuid.UUID,
     ) -> list[ImageModel]:
         query = (
@@ -53,13 +53,14 @@ class ImageRepository:
             .where(ImageModel.user_id == user_id)
             .order_by(ImageModel.created_at.desc())
         )
-        result = await self.session.execute(query)
+        result = await session.execute(query)
         images = result.scalars().all()
 
         return images
 
     async def delete_image(
             self,
+            session: AsyncSession,
             image_id: uuid.UUID,
             user_id: uuid.UUID,
     ) -> ImageModel | None:
@@ -68,16 +69,17 @@ class ImageRepository:
             .where(ImageModel.id == image_id)
             .where(ImageModel.user_id == user_id)
         )
-        result = await self.session.execute(query)
+        result = await session.execute(query)
         image = result.scalar_one_or_none()
 
         if image:
-            self.session.delete(image)
+            session.delete(image)
 
         return image
 
     async def update_description(
             self,
+            session: AsyncSession,
             image_id: uuid.UUID,
             user_id: uuid.UUID,
             new_description: str,
@@ -87,7 +89,7 @@ class ImageRepository:
             .where(ImageModel.id == image_id)
             .where(ImageModel.user_id == user_id)
         )
-        result = await self.session.execute(query)
+        result = await session.execute(query)
         image = result.scalar_one_or_none()
 
         if image:
@@ -97,6 +99,7 @@ class ImageRepository:
 
     async def update_name(
         self,
+        session: AsyncSession,
         image_id: uuid.UUID,
         user_id: uuid.UUID,
         new_name: str,
@@ -106,7 +109,7 @@ class ImageRepository:
             .where(ImageModel.id == image_id)
             .where(ImageModel.user_id == user_id)
         )
-        result = await self.session.execute(query)
+        result = await session.execute(query)
         image = result.scalar_one_or_none()
 
         if image:

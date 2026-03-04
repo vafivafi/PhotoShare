@@ -5,11 +5,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.infrastructure.db.models.user_model import UserModel
 
 class UserRepository:
-    def __init__(self, session: AsyncSession):
-        self.session = session
-
     async def create(
             self,
+            session: AsyncSession,
             username: str,
             hashed_password: str,
     ) -> UserModel:
@@ -18,16 +16,21 @@ class UserRepository:
             username=username,
             password=hashed_password,
         )
-        self.session.add(user)
+        session.add(user)
         return user
 
-    async def get_by_username(self, username: str) -> UserModel | None:
+    async def get_by_username(
+            self,
+            username: str,
+            session: AsyncSession,
+    ) -> UserModel | None:
         query = select(UserModel).where(UserModel.username == username)
-        result = await self.session.execute(query)
+        result = await session.execute(query)
         return result.scalar_one_or_none()
 
     async def get_by_username_with_images(
             self,
+            session: AsyncSession,
             username: str,
     ) -> UserModel | None:
         query = (
@@ -35,5 +38,5 @@ class UserRepository:
             .where(UserModel.username == username)
             .options(selectinload(UserModel.images))
         )
-        result = await self.session.execute(query)
+        result = await session.execute(query)
         return result.scalar_one_or_none()
