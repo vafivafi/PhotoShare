@@ -42,18 +42,3 @@ class AuthXService:
 
         return self._secure
 
-class BearerAuthXService:
-    def __init__(self):
-        self._bearer_scheme: Optional[HTTPBearer] = None
-
-    @property
-    def bearer_scheme(self) -> HTTPBearer:
-        if self._bearer_scheme is None:
-            try:
-                self._bearer_scheme = HTTPBearer()
-                logger.info(f"BearerService config: {self._bearer_scheme}")
-            except Exception as e:
-                logger.error(f"Failed to initialize HTTPBearer: {e}")
-                raise
-
-        return self._bearer_scheme

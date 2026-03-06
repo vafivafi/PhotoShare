@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, EmailStr
+from pydantic import BaseModel, Field
 
 class UserSchema(BaseModel):
     username: str = Field(
@@ -13,4 +13,13 @@ class UserSchema(BaseModel):
         max_length=30,
         description="User password",
         examples=["EQWsItScVkkAa99u3VVP"],
+    )
+
+class UpdateUsernameSchema(BaseModel):
+    new_username: str = Field(
+        min_length=3,
+        max_length=25,
+        pattern="^[a-zA-Z0-9_-]+$",
+        description="Unique username",
+        examples=["Vafitempo_is_best"],
     )

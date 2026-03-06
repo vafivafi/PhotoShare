@@ -11,6 +11,7 @@ class ImageRepository:
             self,
             session: AsyncSession,
             user_id: uuid.UUID,
+            image_url: str,
             image_size: int,
             name: str,
             description: str,
@@ -20,6 +21,7 @@ class ImageRepository:
             image_size=image_size,
             name=name,
             description=description,
+            image_url=image_url
         )
         session.add(image)
 

@@ -25,6 +25,11 @@ class ImageModel(Base):
         Integer,
         nullable=False,
     )
+    image_url: Mapped[str] = mapped_column( 
+        String(500),
+        nullable=False,
+    )
+
     name: Mapped[str] = mapped_column(
         String(25),
         index=True,
