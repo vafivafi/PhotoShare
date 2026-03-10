@@ -38,14 +38,17 @@ class S3Service:
             file_content = await file.read()
 
             file_size = len(file_content)
-            object_key = f"{uuid.uuid4()}_{file.filename}"
+
+            ext = file.filename.split('.')[-1].lower() if '.' in file.filename else 'png'
+            object_key = f"{uuid.uuid4()}.{ext}"
+            
             file_url = f"{self._public_url}/{object_key}"
 
             async with self.get_client() as client:
                 await client.put_object(
                     Bucket=self._bucket_name,
                     Key=object_key,
-                    Body=file_content
+                    Body=file_content,
                 )
             logger.info(f"Uploaded file: {file_url}")
 

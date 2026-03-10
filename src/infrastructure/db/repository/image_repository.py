@@ -60,25 +60,6 @@ class ImageRepository:
 
         return images
 
-    async def delete_image(
-            self,
-            session: AsyncSession,
-            image_id: uuid.UUID,
-            user_id: uuid.UUID,
-    ) -> ImageModel | None:
-        query = (
-            select(ImageModel)
-            .where(ImageModel.id == image_id)
-            .where(ImageModel.user_id == user_id)
-        )
-        result = await session.execute(query)
-        image = result.scalar_one_or_none()
-
-        if image:
-            session.delete(image)
-
-        return image
-
     async def update_description(
             self,
             session: AsyncSession,

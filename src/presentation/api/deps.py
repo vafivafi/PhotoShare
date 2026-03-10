@@ -12,6 +12,7 @@ from src.infrastructure.secure.authx_service import AuthXService
 from src.infrastructure.db.repository.image_repository import ImageRepository
 from src.infrastructure.db.repository.user_repositoty import UserRepository
 from src.service.user_service import UserService
+from src.service.image_service import ImageService
 
 
 @lru_cache(maxsize=1)
@@ -51,6 +52,17 @@ def get_user_service(
         user_repository=user_repository,
         password_service=password_service,
         auth_service=authx_service,
+    )
+
+def get_image_service(
+    s3service: S3Service = Depends(get_s3_service),
+    image_repository: ImageRepository = Depends(get_image_repository),
+    user_repository: UserRepository = Depends(get_user_repository)
+) -> ImageService:
+    return ImageService(
+        s3service=s3service,
+        image_repository=image_repository,
+        user_repository=user_repository,
     )
 
 
