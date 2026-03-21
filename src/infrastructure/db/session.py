@@ -8,7 +8,7 @@ from src.infrastructure.log.logger import logger
 
 class DataBaseConfig:
     def __init__(self):
-        self._db_url = get_database_settings().database_url
+        self._db_url = get_database_settings().get_db_url
         self._async_engine: Optional[AsyncEngine] = None
         self._async_session: Optional[async_sessionmaker[AsyncSession]] = None
 
