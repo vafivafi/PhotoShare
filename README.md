@@ -316,6 +316,6 @@ MIT License — см. файл [LICENSE](LICENSE)
 ---
 
 
-**Made with ❤️ by Your Name**
+**Made with ❤️ by Vafi**
 
 [⬆️ Вернуться наверх](#-photoshare-api)
