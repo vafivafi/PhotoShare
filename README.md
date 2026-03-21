@@ -302,7 +302,7 @@ MIT License — см. файл [LICENSE](LICENSE)
 ## 📞 Контакты
 
 - **GitHub Issues**: [Сообщить о проблеме](https://github.com/yourusername/PhotoShare/issues)
-- **Email**: your.email@example.com
+- **Email**: vafivafi11@gmail.com
 
 ---
 
